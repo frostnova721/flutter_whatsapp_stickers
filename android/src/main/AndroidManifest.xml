@@ -1,9 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="io.github.vincekruger.whatsapp_stickers">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <application
-        android:name="io.flutter.app.FlutterApplication"
         tools:ignore="GoogleAppIndexingWarning"
         android:allowBackup="false"
         android:fullBackupContent="false">

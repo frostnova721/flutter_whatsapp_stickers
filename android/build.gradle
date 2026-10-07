@@ -4,18 +4,18 @@ version '1.0-SNAPSHOT'
 buildscript {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.6.2'
+        classpath 'com.android.tools.build:gradle:8.4.2'
     }
 }
 
-rootProject.allprojects {
+allprojects {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
 }
 
@@ -25,12 +25,17 @@ android {
     aaptOptions {
         noCompress "webp"
     }
-    
-    compileSdkVersion 29
+
+    buildFeatures {
+        buildConfig = true
+    }
+
+    namespace 'io.github.vincekruger.whatsapp_stickers'
 
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 29
+        targetSdkVersion 34
+        compileSdk 34
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "STICKER_PACK_FILE", "\"sticker_packs.json\"")
     }
@@ -48,10 +53,10 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.1.0'
 
-    def fresco_version = '2.2.0'
+    def fresco_version = '3.6.0'
     implementation "com.facebook.fresco:fresco:$fresco_version"
     implementation "com.facebook.fresco:webpsupport:$fresco_version"
     implementation "com.facebook.fresco:animated-webp:$fresco_version"

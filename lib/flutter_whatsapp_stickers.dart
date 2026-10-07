@@ -81,12 +81,12 @@ class WhatsAppStickers {
   /// [stickerPackIdentifier] The sticker pack identider
   /// [stickerPackName] The sticker pack name
   /// [listener] Sets up [MessageHandler] function for incoming events.
-  void addStickerPack({
+  Future<void> addStickerPack({
     WhatsAppPackage packageName = WhatsAppPackage.Consumer,
     @required String? stickerPackIdentifier,
     @required String? stickerPackName,
     MessageHandler? listener,
-  }) {
+  }) async {
     String packageString;
     switch (packageName) {
       case WhatsAppPackage.Consumer:
@@ -99,7 +99,7 @@ class WhatsAppStickers {
 
     _addStickerPackListener = listener;
     _channel.setMethodCallHandler(_handleMethod);
-    _channel.invokeMethod("addStickerPack", {
+    await _channel.invokeMethod("addStickerPack", {
       "package": packageString,
       "identifier": stickerPackIdentifier,
       "name": stickerPackName,
@@ -130,7 +130,8 @@ class WhatsAppStickers {
         return null;
       case "onError":
         bool result = call.arguments['result'];
-        String error = call.arguments['error'] ?? null;
+        String error =
+            call.arguments['error'] ?? 'WhatsApp could not add this pack.';
         _addStickerPackListener!(StickerPackResult.ERROR, result, error: error);
         return null;
       default:

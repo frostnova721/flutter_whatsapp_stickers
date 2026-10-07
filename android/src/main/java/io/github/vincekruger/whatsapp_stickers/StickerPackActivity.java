@@ -33,13 +33,16 @@ public class StickerPackActivity implements PluginRegistry.ActivityResultListene
 
     @Override
     public boolean onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode != ADD_PACK) return false;
         if (requestCode == ADD_PACK) {
             // Create the intent
             if (resultCode == Activity.RESULT_CANCELED) {
                 if (data != null) {
                     final String validationError = data.getStringExtra("validation_error");
                     if (validationError != null) {
-                        this.broadcastResult(ACTION_STICKER_PACK_ERROR, "failed", true, validationError);
+                        this.broadcastResult(ACTION_STICKER_PACK_ERROR, "failed", false, validationError);
+                    } else {
+                        this.broadcastResult(ACTION_STICKER_PACK_RESULT, "cancelled", true, null);
                     }
                 }
                 else {
@@ -49,10 +52,10 @@ public class StickerPackActivity implements PluginRegistry.ActivityResultListene
             else if(resultCode == Activity.RESULT_OK) {
                 if (data != null) {
                     Bundle bundle = data.getExtras();
-                    if(bundle.containsKey("add_successful")){
+                    if(bundle != null && bundle.containsKey("add_successful")){
                         this.broadcastResult(ACTION_STICKER_PACK_RESULT, "add_successful", bundle.getBoolean("add_successful"), null);
                     }
-                    else if(bundle.containsKey("already_added")){
+                    else if(bundle != null && bundle.containsKey("already_added")){
                         this.broadcastResult(ACTION_STICKER_PACK_RESULT, "already_added", bundle.getBoolean("already_added"), null);
                     }
                     else {
@@ -64,7 +67,7 @@ public class StickerPackActivity implements PluginRegistry.ActivityResultListene
                 }
             }
             else {
-                this.broadcastResult(ACTION_STICKER_PACK_RESULT, "unkonwn", true, null);
+                this.broadcastResult(ACTION_STICKER_PACK_ERROR, "unknown", false, "Unexpected WhatsApp activity result: " + resultCode);
             }
         }
 
